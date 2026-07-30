@@ -1,0 +1,27 @@
+# brainstorming session artefacts (local mockups)
+.superpowers/
+
+# dependencies
+node_modules/
+
+# build / release
+*.zip
+dist/
+
+# test output
+playwright-report/
+test-results/
+coverage/
+
+# macOS
+.DS_Store
+Icon?
+
+# Google Drive sync junk (this folder lives in Drive)
+.tmp.drivedownload/
+.tmp.driveupload/
+
+# editors
+.vscode/
+.idea/
+*.swp
