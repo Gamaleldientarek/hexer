@@ -23,7 +23,7 @@ Reading the CSS instead gives exact declared values, the whole page rather than 
 
 | # | Criterion | How it's verified |
 |---|---|---|
-| 1 | On 10 well-known sites, the site's true primary brand colour lands in the BRAND group, top 2 positions | Manual verification list, results recorded in README |
+| 1 | On 10 live sites: every colour returned is an exact declared value, variable names are recovered where the site defines them, and neutrals never land in BRAND. Group *placement* of a primary brand colour is best-effort, not guaranteed | `scripts/verify-sites.mjs`, results in `docs/verification.md`. **Originally specified as 'primary brand colour in BRAND top 2'; that failed at ~3/10 and was found to be unachievable from CSS alone — see docs/verification.md** |
 | 2 | Scan completes in < 400 ms on a ~5,000-element page | `stats.durationMs` asserted in e2e test |
 | 3 | Zero permission warnings at install | Manual check on load-unpacked |
 | 4 | Zero network requests at runtime | DevTools network tab + source inspection (no `fetch`/`XHR` exists in the codebase) |
@@ -263,7 +263,7 @@ Consequences:
 
 - **Zero permission warnings at install.** `activeTab` shows none, and access is granted only by clicking the icon, expiring on navigation off-origin.
 - **Fast-lane Web Store review.** Broad host permissions route to in-depth human review with multi-week waits; narrow `activeTab` MV3 extensions often clear in hours.
-- **Privacy is structural, not promised.** There is no `fetch`, no `XMLHttpRequest`, no analytics, and no storage anywhere in the source. With no build step, a reviewer can confirm it by reading the sixteen source files.
+- **Privacy is structural, not promised.** There is no `fetch`, no `XMLHttpRequest`, no analytics, and no storage anywhere in the source. With no build step, a reviewer can confirm it by reading the source directly.
 
 ---
 
@@ -385,3 +385,29 @@ The landing page **cannot install the extension.** Chrome permanently blocks `.c
 | Background worker | None | Popup can do everything |
 | Build step | None | Published package is the source; simplifies MV3 review |
 | Name | Hexer | Short, says what it hands you |
+
+---
+
+## Addendum — what implementation changed (2026-07-30)
+
+Recorded here so the spec does not read as if it predicted everything. Full
+evidence in `docs/spikes.md` and `docs/verification.md`.
+
+| Spec said | Reality | Why |
+|---|---|---|
+| Two custom-property sources: stylesheet walk primary, Typed OM supplement | **One source: `computedStyleMap()`.** Stylesheet walk deleted | Spike A: `rule.style` iteration returns zero custom properties on all five test sites, including three with no blocked stylesheets. `CSSStyleDeclaration` iteration exposes standard longhands only |
+| Cross-origin stylesheets limit variable-name recovery | **Not a limitation at all** | Typed OM reads computed values; origin is irrelevant. stripe.com blocks 5/5 sheets and still yields 437 variables |
+| BRAND = saturated **and** ≤20% of painted area | **Area cap removed.** Chroma alone decides membership | The hero fixture disproved it: a full-bleed brand hero is the brand colour, not a surface. Area now orders within a group |
+| `CHROMA_BRAND_MIN` = 0.06 | **0.08** | Measured: brand colours cluster 0.104–0.306, neutrals 0.000–0.037. Only `#0A2540` is borderline at 0.060, and it reads as a dark surface |
+| `CLUSTER_DELTA_E` = 0.02 | **0.005** | Measured: one-step hex noise is 0.0014–0.004, but `#FFFFFF` vs `#F6F9FC` is 0.0199. At 0.02 those two fused — a visible error in a tool promising exact values |
+| `<meta name="theme-color">` forced into BRAND | **Rule deleted** | theme-color tints the browser toolbar, nearly always the page background. It put `#FFFFFF` atop Figma's and Airbnb's brand groups |
+| `parse.js` handles hex/rgb/hsl/oklch | **All values normalised through a 1×1 canvas in the scanner** | Chrome serialises modern colour functions in their own space. On tailwindcss.com 222 of 225 distinct values arrived as `oklab()`/`lab()` and were rejected, returning 3 colours for a 2,287-element page. Now 204 |
+| Median-cut quantiser | **Largest-gap split** | Median-of-count splits by pixel population, so on a page 90% white with a 10% accent the median lands inside the white cluster and never isolates the accent |
+| Vendored MMCQ under `src/vendor/` | **Written in-house, `src/core/quantize.js`** | ~30 lines. No third-party licence travels with the extension |
+| 16 source files | 17, plus `palette.js` composing the pipeline | Composition needed its own unit; the count is no longer stated anywhere |
+
+### Still unverified
+
+Success criterion 3, zero permission warnings at install, requires loading the
+unpacked extension through Chrome's native file picker. That cannot be
+automated and is Jimmy's to confirm.

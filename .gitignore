@@ -15,7 +15,8 @@ coverage/
 
 # macOS
 .DS_Store
-Icon?
+# NB: do not add the usual "Icon?" pattern here. On a case-insensitive
+# filesystem it also matches the icons/ directory, which must be committed.
 
 # Google Drive sync junk (this folder lives in Drive)
 .tmp.drivedownload/

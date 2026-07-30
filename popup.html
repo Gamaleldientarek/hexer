@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Hexer</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="bar">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="host" id="host">Scanning…</span>
+    <span class="count" id="count"></span>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab is-on" id="tab-code" role="tab" aria-selected="true">From code</button>
+    <button class="tab" id="tab-images" role="tab" aria-selected="false">From images</button>
+  </nav>
+
+  <main id="board" class="board" aria-live="polite"></main>
+
+  <footer class="foot">
+    <button class="btn btn-primary" id="copy-css">CSS</button>
+    <button class="btn" id="copy-tailwind">Tailwind</button>
+    <button class="btn" id="copy-json">JSON</button>
+    <span class="spacer"></span>
+    <button class="btn" id="save-png">PNG</button>
+    <button class="btn" id="save-jpg">JPG</button>
+    <button class="btn" id="copy-figma">Figma</button>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="src/popup/main.js"></script>
+</body>
+</html>
