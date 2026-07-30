@@ -1,10 +1,86 @@
+<div align="center">
+
 # Hexer
 
 **See the exact colours a website declares — read from its CSS, not guessed from a screenshot.**
 
-One click. No account, no subscription, no server, no network calls. Free and MIT.
+One click. No account, no subscription, no server, no network calls.
 
-Built by [gamaleldien.com](https://gamaleldien.com).
+[![Release](https://img.shields.io/github/v/release/Gamaleldientarek/hexer?color=F83200&label=release)](https://github.com/Gamaleldientarek/hexer/releases/latest)
+[![Licence](https://img.shields.io/badge/licence-MIT-0055FF)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-178%20passing-2a2a2a)](docs/verification.md)
+[![Size](https://img.shields.io/badge/size-29%20KB-2a2a2a)](#)
+[![Tracking](https://img.shields.io/badge/tracking-none-2a2a2a)](#privacy)
+
+Built by [gamaleldien.com](https://gamaleldien.com)
+
+</div>
+
+---
+
+# ⬇️ Install
+
+> **Not on the Chrome Web Store yet** — submission pending.
+> Installing locally takes about a minute and works on Chrome, Edge, Brave, Arc, and any other Chromium browser.
+
+### ➊ Download
+
+### **[⬇️ Download hexer.zip](https://github.com/Gamaleldientarek/hexer/releases/latest/download/hexer.zip)**
+
+Then unzip it. You should end up with a folder containing `manifest.json`.
+
+### ➋ Open the extensions page
+
+Paste this into your address bar:
+
+```
+chrome://extensions
+```
+
+### ➌ Turn on Developer mode
+
+The toggle is in the **top-right corner** of that page.
+
+### ➍ Load it
+
+Click **`Load unpacked`** — top-left — and select the unzipped folder.
+
+### ➎ Pin it
+
+Click the **puzzle-piece icon** in your toolbar, then the pin next to Hexer.
+
+Done. Open any website and click the Hexer icon.
+
+---
+
+> ### 🎨 Try it on `tailwindcss.com` first
+> It declares **204 distinct colours** in `oklab()` — precisely what screenshot-based tools cannot read.
+> Then try **`stripe.com`**, where Hexer recovers **437 CSS variable names**.
+
+---
+
+<details>
+<summary><b>Prefer to clone? (better for updates)</b></summary>
+
+```bash
+git clone https://github.com/Gamaleldientarek/hexer
+cd hexer
+```
+
+Then follow steps ➋–➎ above, selecting the `hexer` folder.
+
+To update later: `git pull`, then click the refresh arrow on the Hexer card in `chrome://extensions`.
+
+</details>
+
+<details>
+<summary><b>Three things worth knowing</b></summary>
+
+- **Developer mode must stay on** for any unpacked extension to keep running. Chrome may nag about this on startup — dismiss it. It stops once the store version is live.
+- **There is no double-click installer, for anyone.** Chrome permanently blocks `.crx` installs from outside the Web Store on macOS and Windows — no flag, no workaround. Load unpacked and the store are the only two routes that exist.
+- **Nothing is uploaded anywhere.** No account, no sign-in, no network calls at all. See [Privacy](#privacy).
+
+</details>
 
 ---
 
@@ -64,42 +140,6 @@ No `<all_urls>`, no host permissions, no storage, no background service worker. 
 
 There is no `fetch`, no `XMLHttpRequest`, no analytics and no storage anywhere in the source. There is also **no build step** — the published package is the source, so you can verify all of that by reading it directly rather than trusting a bundle.
 
-## Install
-
-**From the Chrome Web Store:** submission pending.
-
-Until then, install it locally. It takes about a minute and works on Chrome, Edge, Brave, Arc and any other Chromium browser.
-
-### Option A — download the release (no git needed)
-
-1. Download **`hexer.zip`** from the [latest release](https://github.com/Gamaleldientarek/hexer/releases/latest).
-2. Unzip it. You should end up with a folder containing `manifest.json`.
-3. Open `chrome://extensions` in your browser.
-4. Turn on **Developer mode** — the toggle is in the top-right corner.
-5. Click **Load unpacked** and select the unzipped folder.
-6. Hexer appears in your toolbar. Click the puzzle-piece icon and pin it.
-
-### Option B — clone the repo
-
-```bash
-git clone https://github.com/Gamaleldientarek/hexer
-cd hexer
-```
-
-Then follow steps 3–6 above, selecting the `hexer` folder.
-
-Cloning is the better option if you want updates: `git pull`, then hit the refresh arrow on the Hexer card in `chrome://extensions`.
-
-### Try it on
-
-`tailwindcss.com` is the best first test — it declares 204 distinct colours in `oklab()`, which is exactly what screenshot-based tools cannot read. `stripe.com` shows off variable-name recovery, with 437 of them.
-
-### Notes
-
-- **Developer mode must stay on** for an unpacked extension to keep running. Chrome may show a "disable developer mode extensions" prompt on startup — dismiss it; that goes away once the store version is live.
-- **There is no double-click installer.** Chrome permanently blocks `.crx` installs from outside the Web Store on macOS and Windows — no flag, no workaround. Load unpacked and the store are the only two routes for anyone.
-- **Nothing is uploaded anywhere.** No account, no sign-in, no network calls at all.
-
 ## Development
 
 ```bash
@@ -107,7 +147,7 @@ npm install
 npx playwright install chromium
 
 npm test                         # 147 unit tests
-npm run test:e2e                 # 30 browser tests
+npm run test:e2e                 # 31 browser tests
 npm run icons                    # regenerate PNGs from icons/icon.svg
 node scripts/verify-sites.mjs    # scan 10 live sites and report
 ```
