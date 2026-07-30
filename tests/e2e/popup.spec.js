@@ -254,6 +254,20 @@ test('the popup is exactly 400px wide and does not scroll horizontally', async (
   expect(scrollWidth).toBeLessThanOrEqual(400);
 });
 
+test('the brand mark credits gamaleldien.com without costing layout', async ({ page }) => {
+  await open(page);
+  const mark = page.locator('.mark');
+  await expect(mark).toHaveAttribute('href', 'https://gamaleldien.com');
+  await expect(mark).toHaveAttribute('target', '_blank');
+  await expect(mark).toHaveAttribute('rel', /noopener/);
+  await expect(mark).toHaveAttribute('title', /gamaleldien\.com/);
+
+  // Still a 15px square — the credit must not push the host name around.
+  const box = await mark.boundingBox();
+  expect(Math.round(box.width)).toBe(15);
+  expect(Math.round(box.height)).toBe(15);
+});
+
 test('the six footer buttons fit on one row', async ({ page }) => {
   await open(page);
   const tops = await page.locator('.foot .btn')

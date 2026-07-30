@@ -3,6 +3,7 @@
   "name": "Hexer — Website Colour Palette from CSS",
   "version": "1.0.0",
   "description": "Get the exact colour palette of any website, straight from its CSS.",
+  "homepage_url": "https://gamaleldien.com",
   "permissions": ["activeTab", "scripting"],
   "action": {
     "default_popup": "popup.html",

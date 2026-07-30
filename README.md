@@ -4,6 +4,8 @@
 
 One click. No account, no subscription, no server, no network calls. Free and MIT.
 
+Built by [gamaleldien.com](https://gamaleldien.com).
+
 ---
 
 ## Why
@@ -125,6 +127,14 @@ Pages above 20,000 elements are sampled, and the UI says so rather than pretendi
 
 Cross-origin **stylesheets** are *not* a limitation, despite being the obvious guess: values and variable names come from computed styles, so origin is irrelevant. stripe.com blocks all five of its stylesheets and still yields 437 variables.
 
+## Credits
+
+Designed and built by **Gamal Eldien Tarek** — [gamaleldien.com](https://gamaleldien.com).
+
+Creative Director and brand strategist. Hexer came out of needing a site's real palette often enough to resent paying a subscription for an approximation of one.
+
 ## Licence
 
 MIT — see [LICENSE](LICENSE).
+
+Free to use, fork, and ship. If it saves you an afternoon, a link back to [gamaleldien.com](https://gamaleldien.com) is welcome but never required.
