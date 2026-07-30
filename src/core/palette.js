@@ -40,13 +40,12 @@ export function buildPalette(scan) {
 
   const clustered = cluster(entries, CLUSTER_DELTA_E);
 
-  const themeRgb = scan.meta?.themeColor ? parseColor(scan.meta.themeColor) : null;
   const varsByHex = indexVars(scan.vars);
 
   const groups = { brand: [], text: [], surface: [], border: [] };
 
   for (const e of clustered) {
-    const role = assignRole(e, { themeRgb, chromaMin: CHROMA_BRAND_MIN });
+    const role = assignRole(e, { chromaMin: CHROMA_BRAND_MIN });
     groups[role].push({ ...e, role, varName: varsByHex.get(e.hex) ?? null });
   }
 

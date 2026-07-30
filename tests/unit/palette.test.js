@@ -102,12 +102,15 @@ describe('buildPalette', () => {
     expect(p.stats.total).toBe(1);
   });
 
-  it('forces a meta theme-color into brand', () => {
+  it('does not promote a meta theme-color into brand', () => {
+    // theme-color is the browser toolbar tint, normally the page background.
+    // #0A2540 has chroma 0.060, below the floor, so it belongs in surface.
     const p = buildPalette(scan(
       [{ value: 'rgb(10, 37, 64)', source: 'background-color', weight: 9000, count: 1 }],
       { meta: { themeColor: '#0A2540' } },
     ));
-    expect(p.groups.brand.map((e) => e.hex)).toEqual(['#0A2540']);
+    expect(p.groups.brand).toEqual([]);
+    expect(p.groups.surface.map((e) => e.hex)).toEqual(['#0A2540']);
   });
 
   it('sorts each group by weight descending', () => {

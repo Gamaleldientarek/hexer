@@ -67,6 +67,42 @@ export function scanPage({ elementCap }) {
     return getComputedStyle(probe).color;
   };
 
+  // ------------------------------------------------------------ normalisation
+  // Chrome serialises modern colour functions in their own space, so computed
+  // styles hand back oklab(), lab(), lch() and oklch(0 0 none / 0.54) verbatim.
+  // Tailwind v4 sites are almost entirely oklab/lab: on tailwindcss.com, 222 of
+  // 225 distinct values arrived in those forms.
+  //
+  // A 1x1 canvas converts anything Chrome can parse into exact sRGB bytes, so
+  // the downstream pure code only ever sees rgb()/rgba(). Cheaper and far more
+  // future-proof than reimplementing CIELAB and OKLab inverses by hand.
+
+  const swatch = document.createElement('canvas');
+  swatch.width = 1;
+  swatch.height = 1;
+  const sctx = swatch.getContext('2d', { willReadFrequently: true });
+
+  const normaliseCache = new Map();
+
+  const toRgbString = (value) => {
+    const cached = normaliseCache.get(value);
+    if (cached !== undefined) return cached;
+
+    let out = value;
+    try {
+      sctx.clearRect(0, 0, 1, 1);
+      sctx.fillStyle = value;
+      sctx.fillRect(0, 0, 1, 1);
+      const [r, g, b, a] = sctx.getImageData(0, 0, 1, 1).data;
+      out = a === 255
+        ? 'rgb(' + r + ', ' + g + ', ' + b + ')'
+        : 'rgba(' + r + ', ' + g + ', ' + b + ', ' + (a / 255).toFixed(3) + ')';
+    } catch (e) { /* leave the original value; parse.js will judge it */ }
+
+    normaliseCache.set(value, out);
+    return out;
+  };
+
   // -------------------------------------------------------- custom properties
   //
   // Typed OM is the ONLY source that works. Spike A measured the alternative —
@@ -223,12 +259,19 @@ export function scanPage({ elementCap }) {
 
   probe.remove();
 
+  // Normalise every harvested value to sRGB. Two syntaxes for the same colour
+  // collapse to one string here; rank() keys by value, so it merges them.
+  const normalisedRecords = [...records.values()]
+    .map((r) => ({ ...r, value: toRgbString(r.value) }));
+
+  const normalisedVars = vars.map((v) => ({ ...v, value: toRgbString(v.value) }));
+
   return {
     ok: true,
     host: location.host || location.href,
-    meta: { themeColor },
-    vars,
-    records: [...records.values()],
+    meta: { themeColor: themeColor ? toRgbString(themeColor) : null },
+    vars: normalisedVars,
+    records: normalisedRecords,
     stats: {
       elements: all.length,
       scanned: elements.length,

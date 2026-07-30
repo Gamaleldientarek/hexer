@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { assignRole, TEXT_SOURCES, EDGE_SOURCES } from '../../src/core/roles.js';
 import { srgbToOklab, oklabToOklch } from '../../src/core/oklab.js';
 
-const OPTS = { themeRgb: null, chromaMin: 0.08 };
+const OPTS = { chromaMin: 0.08 };
 
 const entry = (rgb, sources, weightPct = 5) => ({
   rgb,
@@ -74,9 +74,11 @@ describe('assignRole', () => {
     expect(assignRole(entry(ORANGE, { stroke: 100 }, 3), OPTS)).toBe('brand');
   });
 
-  it('forces BRAND for a colour matching meta theme-color', () => {
-    const opts = { ...OPTS, themeRgb: { r: 255, g: 255, b: 255, a: 1 } };
-    expect(assignRole(entry(WHITE, { 'background-color': 9000 }, 47), opts)).toBe('brand');
+  it('ignores meta theme-color entirely', () => {
+    // theme-color tints the browser toolbar and is nearly always the page
+    // background. Forcing it into brand put #FFFFFF at the top of Figma's and
+    // Airbnb's brand groups. Chroma decides, nothing else.
+    expect(assignRole(entry(WHITE, { 'background-color': 9000 }, 47), OPTS)).toBe('surface');
   });
 
   it('breaks a text/fill tie toward whichever weighs more', () => {

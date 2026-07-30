@@ -23,8 +23,6 @@ const sumWhere = (sources, predicate) => {
   return total;
 };
 
-const sameColour = (a, b) => !!a && !!b && a.r === b.r && a.g === b.g && a.b === b.b;
-
 /**
  * Classifies one colour into brand / text / surface / border.
  *
@@ -38,10 +36,14 @@ const sameColour = (a, b) => !!a && !!b && a.r === b.r && a.g === b.g && a.b ===
  * weighs more" as separate rules, which conflict when a colour is used as both
  * text and fill. The weight comparison is the general case and subsumes the
  * other: text with no fill weight always wins the comparison.
+ *
+ * <meta name="theme-color"> is deliberately NOT forced into brand. An earlier
+ * draft did that, and it was measurably wrong: theme-color sets the browser
+ * toolbar tint, which is nearly always the page background. It put #FFFFFF at
+ * the top of Figma's and Airbnb's brand groups, #FAFAFA at the top of
+ * Vercel's, and #08090A at the top of Linear's.
  */
-export function assignRole(entry, { themeRgb, chromaMin }) {
-  if (sameColour(entry.rgb, themeRgb)) return 'brand';
-
+export function assignRole(entry, { chromaMin }) {
   const textWeight = sumWhere(entry.sources, (s) => TEXT_SOURCES.has(s));
   const edgeWeight = sumWhere(entry.sources, (s) => EDGE_SOURCES.has(s));
   const fillWeight = sumWhere(entry.sources, (s) => !TEXT_SOURCES.has(s) && !EDGE_SOURCES.has(s));
