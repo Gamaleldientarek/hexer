@@ -11,7 +11,8 @@
     "test:e2e": "playwright test",
     "spike:a": "node scripts/spike-a.mjs",
     "icons": "node scripts/make-icons.mjs",
-    "zip": "rm -f hexer.zip && zip -r hexer.zip manifest.json popup.html popup.css icons src -x '*.DS_Store'"
+    "zip": "npm run build && rm -f hexer.zip && cd dist && zip -qr ../hexer.zip . && cd .. && echo 'hexer.zip ready'",
+    "build": "rm -rf dist && mkdir -p dist && cp -R manifest.json popup.html popup.css icons src dist/ && find dist -name '.DS_Store' -delete && echo 'dist/ ready \u2014 load this folder unpacked'"
   },
   "devDependencies": {
     "vitest": "^3.2.4",
