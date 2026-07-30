@@ -1,8 +1,8 @@
 export const GROUP_ORDER = ['brand', 'text', 'surface', 'border'];
 
-const GRID_COLUMNS = 6;
+const GRID_COLUMNS = 4;
 const SPAN_MIN = 1;
-const SPAN_MAX = 4;
+const SPAN_MAX = 2;
 
 /**
  * Column span for one swatch, from its share of its OWN group.
@@ -10,6 +10,11 @@ const SPAN_MAX = 4;
  * Sizing is per-group on purpose. Sized against the whole palette, a white
  * surface at 47% would swallow the popup and the brand colour at 6.8% would
  * be a speck — backwards, since the brand colour is what the tool is for.
+ *
+ * A 4-column grid spanning 1–2, not 6 spanning 1–4. The wider range looked
+ * better empty and failed with real data: a 4-of-6 dominant swatch squeezed
+ * its siblings to ~55px, which truncated the hex itself — the one thing the
+ * user came for. Every cell now clears the widest hex plus its percentage.
  */
 export function spanFor(weight, groupTotal) {
   if (!(groupTotal > 0)) return SPAN_MIN;
@@ -31,13 +36,29 @@ const captionFor = (entry) => {
   return parts.join('  ');
 };
 
+/**
+ * Two caption lines, not one. The hex must never truncate — it is the payload.
+ * The variable name is the only part allowed to ellipsis, and the percentage
+ * is pinned right so the column can be scanned.
+ */
+const captionNodes = (entry) => {
+  const hex = el('span', 'hx', entry.hex);
+
+  const meta = el('span', 'meta');
+  meta.append(el('span', 'var', entry.varName || ''));
+  meta.append(el('span', 'pct', entry.weightPct.toFixed(1) + '%'));
+
+  return [hex, meta];
+};
+
 /** Renders one labelled grid of swatches. Used by both tabs. */
 export function renderGroup(label, items, root, onCopy) {
   if (!items || items.length === 0) return;
 
   const groupTotal = items.reduce((sum, e) => sum + e.weight, 0);
 
-  root.append(el('h2', 'group', label));
+  const band = el('section', 'band');
+  band.append(el('h2', 'group', label));
 
   const grid = el('div', 'grid');
 
@@ -50,12 +71,13 @@ export function renderGroup(label, items, root, onCopy) {
     const swatch = el('span', 'sw');
     swatch.style.background = entry.hex;
 
-    cell.append(swatch, el('span', 'hx', captionFor(entry)));
+    cell.append(swatch, ...captionNodes(entry));
     cell.addEventListener('click', () => onCopy(entry.hex, cell));
     grid.append(cell);
   }
 
-  root.append(grid);
+  band.append(grid);
+  root.append(band);
 }
 
 /** Builds the full swatch board. Empty groups never render a heading. */

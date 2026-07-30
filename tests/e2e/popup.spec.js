@@ -113,20 +113,54 @@ test('renders groups in order and omits empty ones', async ({ page }) => {
 
 test('files the saturated colours under brand with exact hexes', async ({ page }) => {
   await open(page);
-  const labels = await page.locator('.grid').first().locator('.hx').allTextContents();
-  expect(labels.join(' ')).toContain('#635BFF');
-  expect(labels.join(' ')).toContain('--blurple');
-  expect(labels.join(' ')).toContain('#0570DE');
+  const cells = await page.locator('.grid').first().locator('.cell').allTextContents();
+  expect(cells.join(' ')).toContain('#635BFF');
+  expect(cells.join(' ')).toContain('--blurple');
+  expect(cells.join(' ')).toContain('#0570DE');
+});
+
+test('the hex never truncates, whatever the cell width', async ({ page }) => {
+  await open(page);
+  // The hex is the payload. Only the variable name may ellipsis, so every
+  // .hx must render its full 7 characters and fit inside its own box.
+  const overflowing = await page.locator('.hx').evaluateAll((nodes) =>
+    nodes.filter((n) => n.textContent.trim().length !== 7 || n.scrollWidth > n.clientWidth + 1)
+      .map((n) => n.textContent));
+  expect(overflowing).toEqual([]);
 });
 
 test('sizes swatches by dominance within the group, not across the palette', async ({ page }) => {
   await open(page);
   const spans = await page.locator('.grid').first().locator('.cell')
     .evaluateAll((cells) => cells.map((c) => c.style.gridColumn));
-  // Blurple carries ~80% of the brand group, so it takes the full 4 columns
+  // Blurple carries ~80% of the brand group, so it takes the full 2 columns
   // even though it is only ~7% of the page.
-  expect(spans[0]).toBe('span 4');
+  expect(spans[0]).toBe('span 2');
   expect(spans[1]).toBe('span 1');
+});
+
+test('the footer stays reachable without scrolling', async ({ page }) => {
+  await open(page);
+  // Chrome caps a popup at 600px. Four groups overflow that, so the board
+  // must scroll inside a fixed column rather than pushing the exports away.
+  const { footTop, viewport, boardScrolls } = await page.evaluate(() => ({
+    footTop: document.querySelector('.foot').getBoundingClientRect().top,
+    viewport: window.innerHeight,
+    boardScrolls: document.getElementById('board').scrollHeight
+      > document.getElementById('board').clientHeight,
+  }));
+  expect(footTop).toBeLessThan(viewport);
+  expect(boardScrolls).toBe(true);
+});
+
+test('group bands are separated by a rule', async ({ page }) => {
+  await open(page);
+  await expect(page.locator('.band')).toHaveCount(4);
+  const borders = await page.locator('.band').evaluateAll((bands) =>
+    bands.map((b) => getComputedStyle(b).borderTopWidth));
+  // First band opens the board, the other three carry a separator.
+  expect(borders[0]).toBe('0px');
+  expect(borders.slice(1)).toEqual(['1px', '1px', '1px']);
 });
 
 test('paints each swatch with its own hex', async ({ page }) => {

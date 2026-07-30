@@ -1,45 +1,97 @@
+/* ---------------------------------------------------------------- tokens */
+/*
+   Hexer's chrome is greyscale on purpose. A colour tool with a colourful UI
+   misreads its own swatches — surrounding hues shift perception. #F83200
+   appears only on the mark, the active tab and focus states. Nothing else.
+
+   Everything sits on a 4px spacing grid and a 3-step radius scale. The
+   previous build used 11/13/12/14/9/5/8/15/18px and five different radii,
+   which read as slightly-off rather than deliberate at this size.
+*/
 :root {
   --ink: #141414;
   --ink-2: #4a4a4a;
   --ink-3: #8b8b8b;
   --ink-4: #b0b0b0;
+
   --line: #ededed;
   --line-2: #e3e3e3;
+
   --bg: #ffffff;
   --bg-2: #fcfcfc;
   --hover: #faf9f8;
+
   --accent: #f83200;
+
+  /* 4px grid */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 20px;
+  --s6: 24px;
+
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-lg: 12px;
+  --r-full: 999px;
+
+  /* A swatch's own edge. Without it a #FFFFFF sample is an empty box on a
+     white popup — the one case where a colour tool must not be subtle. */
+  --swatch-edge: inset 0 0 0 1px rgba(0, 0, 0, 0.14);
+  --swatch-edge-hover: inset 0 0 0 1px rgba(0, 0, 0, 0.32);
+
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 * { box-sizing: border-box; }
 
+/* Chrome caps a popup at 600px tall. Without an explicit column layout the
+   board pushes the footer past that edge and the export buttons become
+   unreachable — the taller band spacing made this reproducible on any site
+   with four groups. Header and tabs pin to the top, the footer pins to the
+   bottom, and only the board scrolls. */
+/* Let the popup read as a floating white panel rather than a full-bleed
+   sheet: transparent behind, rounded corners in front, clipped so the
+   header and footer follow the curve. */
+html {
+  background: transparent;
+  border-radius: var(--r-lg);
+}
+
 body {
   width: 400px;
+  max-height: 600px;
   margin: 0;
+  display: flex;
+  flex-direction: column;
   background: var(--bg);
   color: var(--ink);
-  font: 400 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+  font: 400 13px/1.4 var(--sans);
+  border-radius: var(--r-lg);
+  overflow: hidden;
 }
+
+.bar, .tabs, .foot { flex: none; }
 
 /* ---------------------------------------------------------------- header */
 
 .bar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 11px 13px;
+  gap: var(--s2);
+  padding: var(--s3);
   border-bottom: 1px solid var(--line);
 }
 
-/* The brand mark doubles as the only credit in the UI. A 400px footer with
-   six buttons has no room for a byline, and a colour tool's chrome must stay
-   neutral, so the attribution lives here at zero layout cost. */
+/* The mark doubles as the only credit in the UI. A 400px footer with six
+   buttons has no room for a byline, so attribution lives here at no cost. */
 .mark {
   display: block;
   width: 15px;
   height: 15px;
-  border-radius: 4px;
+  border-radius: var(--r-sm);
   background: var(--accent);
   flex: none;
 }
@@ -49,6 +101,7 @@ body {
 
 .host {
   flex: 1;
+  min-width: 0;
   font-weight: 500;
   font-size: 12.5px;
   letter-spacing: -0.01em;
@@ -57,13 +110,18 @@ body {
   white-space: nowrap;
 }
 
-.count { font-size: 10.5px; color: var(--ink-4); }
+.count {
+  font-size: 10.5px;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+  flex: none;
+}
 
 /* ------------------------------------------------------------------ tabs */
 
 .tabs {
   display: flex;
-  padding: 0 13px;
+  padding: 0 var(--s3);
   border-bottom: 1px solid var(--line);
 }
 
@@ -72,36 +130,46 @@ body {
   border: 0;
   background: none;
   cursor: pointer;
-  font: 500 10.5px/1 system-ui, sans-serif;
+  font: 500 10.5px/1 var(--sans);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-4);
-  padding: 10px 0;
-  margin-right: 18px;
+  padding: var(--s3) 0;
+  margin-right: var(--s5);
   border-bottom: 2px solid transparent;
 }
 
 .tab.is-on { color: var(--ink); border-bottom-color: var(--accent); }
-.tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tab:hover:not(.is-on) { color: var(--ink-2); }
+.tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
 /* ----------------------------------------------------------------- board */
 
-.board { padding: 12px 13px 14px; min-height: 120px; }
+.board {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 var(--s3) var(--s4);
+  min-height: 140px;
+}
+
+/* Each group is a measured band. The hairline is what separates four groups
+   that otherwise stack into one undifferentiated block. */
+.band { padding-top: var(--s4); }
+.band + .band { border-top: 1px solid var(--line); margin-top: var(--s4); }
 
 .group {
-  margin: 0 0 8px;
-  font: 500 9.5px/1 system-ui, sans-serif;
+  margin: 0 0 var(--s3);
+  font: 500 9.5px/1 var(--sans);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--ink-4);
 }
 
-.group:not(:first-child) { margin-top: 15px; }
-
 .grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s2);
 }
 
 .cell {
@@ -114,34 +182,69 @@ body {
   min-width: 0;
 }
 
-.cell:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+.cell:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--r-md);
+}
 
 .sw {
   display: block;
-  height: 52px;
-  border-radius: 7px;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  height: 56px;
+  border-radius: var(--r-md);
+  box-shadow: var(--swatch-edge);
+  transition: box-shadow 0.12s ease;
 }
 
-.cell:hover .sw { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25); }
+.cell:hover .sw { box-shadow: var(--swatch-edge-hover); }
 
+/* The hex is the payload and never truncates. */
 .hx {
   display: block;
-  margin-top: 5px;
-  font: 500 9px/1.3 var(--mono);
+  margin-top: var(--s2);
+  font: 500 10px/1 var(--mono);
   letter-spacing: -0.02em;
-  color: var(--ink-2);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Only the variable name is allowed to ellipsis. */
+.meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s1);
+  margin-top: var(--s1);
+  min-width: 0;
+}
+
+.var {
+  flex: 1;
+  min-width: 0;
+  font: 400 9px/1.2 var(--mono);
+  color: var(--ink-4);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.pct {
+  flex: none;
+  font: 500 9px/1.2 var(--sans);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
 .cell.is-copied .hx { color: var(--accent); }
 
-.note { margin: 14px 0 0; font-size: 10px; color: var(--ink-4); }
+.note {
+  margin: var(--s4) 0 0;
+  font-size: 10px;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
 
 .msg {
-  margin: 18px 0 12px;
+  margin: var(--s5) 0 var(--s3);
   font-size: 12.5px;
   line-height: 1.5;
   color: var(--ink-2);
@@ -152,26 +255,27 @@ body {
 .foot {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 9px 11px;
+  gap: var(--s1);
+  padding: var(--s2) var(--s3);
   border-top: 1px solid var(--line);
   background: var(--bg-2);
 }
 
 .btn {
-  font: 500 10.5px/1 system-ui, sans-serif;
+  font: 500 10.5px/1 var(--sans);
   color: var(--ink-2);
-  padding: 6px 9px;
+  padding: 7px var(--s2);
   border: 1px solid var(--line-2);
-  border-radius: 6px;
+  border-radius: var(--r-md);
   background: var(--bg);
   cursor: pointer;
   white-space: nowrap;
 }
 
-.btn:hover { border-color: var(--ink-4); }
+.btn:hover { border-color: var(--ink-4); color: var(--ink); }
 .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn-primary:hover { color: var(--bg); border-color: var(--ink); }
 .btn[disabled] { opacity: 0.4; cursor: default; }
 .spacer { flex: 1; }
 
@@ -180,16 +284,20 @@ body {
 .toast {
   position: fixed;
   left: 50%;
-  bottom: 52px;
-  transform: translate(-50%, 8px);
-  padding: 6px 12px;
-  border-radius: 999px;
+  bottom: 56px;
+  transform: translate(-50%, var(--s2));
+  padding: var(--s2) var(--s3);
+  border-radius: var(--r-full);
   background: var(--ink);
   color: var(--bg);
-  font: 500 10.5px/1 system-ui, sans-serif;
+  font: 500 10.5px/1 var(--sans);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
 .toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .toast, .sw { transition: none; }
+}
