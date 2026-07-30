@@ -12,7 +12,7 @@
     "spike:a": "node scripts/spike-a.mjs",
     "icons": "node scripts/make-icons.mjs",
     "zip": "npm run build && rm -f hexer.zip && cd dist && zip -qr ../hexer.zip . && cd .. && echo 'hexer.zip ready'",
-    "build": "rm -rf dist && mkdir -p dist && cp -R manifest.json popup.html popup.css icons src dist/ && find dist -name '.DS_Store' -delete && echo 'dist/ ready \u2014 load this folder unpacked'"
+    "build": "rm -rf dist && mkdir -p dist && cp -R manifest.json popup.html popup.css icons src dist/ && rm -f dist/icons/store-icon* && find dist -name '.DS_Store' -delete && echo 'dist/ ready \u2014 load this folder unpacked'"
   },
   "devDependencies": {
     "vitest": "^3.2.4",
