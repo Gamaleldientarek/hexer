@@ -20,7 +20,7 @@ Built by [gamaleldien.com](https://gamaleldien.com)
 
 # ⬇️ Install
 
-> **Not on the Chrome Web Store yet** — submission pending.
+> **Submitted to the Chrome Web Store on 31 July 2026** — awaiting review.
 > Installing locally takes about a minute and works on Chrome, Edge, Brave, Arc, and any other Chromium browser.
 
 ### ➊ Download
