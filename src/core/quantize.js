@@ -1,5 +1,5 @@
 /**
- * Colour quantisation by recursive largest-gap splitting.
+ * Color quantisation by recursive largest-gap splitting.
  *
  * Repeatedly takes the largest bucket, finds the channel with the widest
  * spread, sorts on it, and splits at the **largest gap between consecutive

@@ -43,12 +43,12 @@ all 5 of its stylesheets blocked and Typed OM still returned 714 variables, beca
 Typed OM reads computed values and does not care where a rule came from. The README's
 known-limits list must drop this entry.
 
-**Sites can expose thousands of custom properties, mostly non-colours.** github.com
+**Sites can expose thousands of custom properties, mostly non-colors.** github.com
 has 1,992: `--Layout-column-gap`, `--animate-bounce`, `--100dvh`. Resolving each one
 through the style probe forces a style recalculation, so 2,000 probes would blow the
-400 ms scan budget on its own. Mitigation: a `COLOUR_SHAPED` regex rejects values that
-cannot be colours before any probe runs, cutting probes from thousands to dozens.
-Named colours are matched by a short word test so `--x: rebeccapurple` still resolves.
+400 ms scan budget on its own. Mitigation: a `COLOR_SHAPED` regex rejects values that
+cannot be colors before any probe runs, cutting probes from thousands to dozens.
+Named colors are matched by a short word test so `--x: rebeccapurple` still resolves.
 
 **Scope caveat, accepted.** Typed OM returns the custom properties *in effect* on
 `<html>` right now. Variables defined only under an inactive theme — say

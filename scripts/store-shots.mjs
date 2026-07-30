@@ -129,7 +129,7 @@ const shot = (b64) => `<div class="shot"><img src="data:image/png;base64,${b64}"
 // --------------------------------------------------------------------- build
 
 // Sites chosen because their output photographs honestly: every group
-// populated, most colours carrying a real variable name, and few enough
+// populated, most colors carrying a real variable name, and few enough
 // entries to read without scrolling. stripe.com was the first pick and was
 // dropped — its brand group is 20 near-identical gradient stops at 0.0%,
 // which reads as noise rather than a palette.
@@ -153,7 +153,7 @@ const twShot = await shootPopup(tw);
 await frame('01-exact', `
   <div class="copy">
     <span class="eyebrow">Read from the code</span>
-    <h1>The exact colours.<br>Not a <em>guess</em>.</h1>
+    <h1>The exact colors.<br>Not a <em>guess</em>.</h1>
     <p>Every other palette tool screenshots the page and quantises pixels, so
        you get an approximation. Hexer reads the stylesheet and gives you the
        value the site actually <b>declared</b>.</p>
@@ -165,12 +165,12 @@ await frame('01-exact', `
 await frame('02-complete', `
   <div class="copy">
     <span class="eyebrow">The whole page</span>
-    <h1>Every colour,<br>not the <em>visible</em> ones.</h1>
+    <h1>Every color,<br>not the <em>visible</em> ones.</h1>
     <p>Screenshot tools only see the viewport. Hexer reads the entire
        stylesheet — including modern <b>oklch()</b>, <b>oklab()</b> and
        <b>lab()</b> values that pixel sampling cannot resolve at all.</p>
     <div class="stats">
-      <div class="stat"><b>${twPal.stats.total}</b><span>colours on tailwindcss.com</span></div>
+      <div class="stat"><b>${twPal.stats.total}</b><span>colors on tailwindcss.com</span></div>
       <div class="stat"><b>${tw.vars.length}</b><span>variable names recovered</span></div>
       <div class="stat"><b>${tw.stats.durationMs}ms</b><span>to scan</span></div>
     </div>
@@ -189,11 +189,11 @@ await frame('03-names', `
   <div class="copy">
     <span class="eyebrow">Named, not numbered</span>
     <h1>It knows what the site <em>calls</em> them.</h1>
-    <p>Hexer recovers the CSS custom property behind each colour, so the
+    <p>Hexer recovers the CSS custom property behind each color, so the
        palette you paste back into your codebase uses the same names the
        site already uses — plus how much of the page each one paints.</p>
     <div class="stats">
-      <div class="stat"><b>${notionNamed}/${notionPal.stats.total}</b><span>colours named on notion.com</span></div>
+      <div class="stat"><b>${notionNamed}/${notionPal.stats.total}</b><span>colors named on notion.com</span></div>
       <div class="stat"><b>${heroNamed}/${heroPal.stats.total}</b><span>on basecamp.com</span></div>
     </div>
   </div>
@@ -254,8 +254,8 @@ await tilePage.setContent(`
     <i style="background:#F83200;width:16px"></i>
   </div>
   <h1>Hexer</h1>
-  <p>The exact colours of any site, read from its CSS.</p>
-  <span class="cap">Width shows how much of the page each colour paints</span>
+  <p>The exact colors of any site, read from its CSS.</p>
+  <span class="cap">Width shows how much of the page each color paints</span>
 `);
 await tilePage.waitForTimeout(700);
 await tilePage.screenshot({ path: `${OUT}/promo-440x280.png` });

@@ -8,7 +8,7 @@ describe('quantize', () => {
     expect(quantize([], 8)).toEqual([]);
   });
 
-  it('returns one entry for a solid colour', () => {
+  it('returns one entry for a solid color', () => {
     const out = quantize(repeat([248, 50, 0], 50), 8);
     expect(out).toHaveLength(1);
     expect(out[0].rgb).toEqual({ r: 248, g: 50, b: 0, a: 1 });

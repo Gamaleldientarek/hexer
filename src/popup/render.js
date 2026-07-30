@@ -8,8 +8,8 @@ const SPAN_MAX = 2;
  * Column span for one swatch, from its share of its OWN group.
  *
  * Sizing is per-group on purpose. Sized against the whole palette, a white
- * surface at 47% would swallow the popup and the brand colour at 6.8% would
- * be a speck — backwards, since the brand colour is what the tool is for.
+ * surface at 47% would swallow the popup and the brand color at 6.8% would
+ * be a speck — backwards, since the brand color is what the tool is for.
  *
  * A 4-column grid spanning 1–2, not 6 spanning 1–4. The wider range looked
  * better empty and failed with real data: a 4-of-6 dominant swatch squeezed

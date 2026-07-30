@@ -20,7 +20,7 @@ describe('cluster', () => {
     expect(cluster([], 0.02)).toEqual([]);
   });
 
-  it('leaves visibly different colours separate', () => {
+  it('leaves visibly different colors separate', () => {
     const out = cluster([
       entry({ r: 248, g: 50, b: 0 }, 100),
       entry({ r: 0, g: 85, b: 255 }, 50),
@@ -28,7 +28,7 @@ describe('cluster', () => {
     expect(out).toHaveLength(2);
   });
 
-  it('merges near-identical colours', () => {
+  it('merges near-identical colors', () => {
     const out = cluster([
       entry({ r: 99, g: 91, b: 255 }, 100),
       entry({ r: 99, g: 92, b: 255 }, 40),

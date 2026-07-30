@@ -72,7 +72,7 @@ const stubChrome = (page, { scan = SCAN, injectThrows = false } = {}) =>
     window.chrome = {
       tabs: {
         query: async () => [{ id: 1, url: 'https://stripe.com/' }],
-        // Render a real two-colour PNG rather than hardcoding base64. A
+        // Render a real two-color PNG rather than hardcoding base64. A
         // hardcoded string is easy to get subtly wrong, and pixel-scan.js
         // rightly refuses to decode it.
         captureVisibleTab: async () => {
@@ -99,10 +99,10 @@ const open = async (page, opts) => {
   await page.waitForFunction(() => document.getElementById('host').textContent !== 'Scanning…');
 };
 
-test('renders the host and colour count', async ({ page }) => {
+test('renders the host and color count', async ({ page }) => {
   await open(page);
   await expect(page.locator('#host')).toHaveText('stripe.com');
-  await expect(page.locator('#count')).toHaveText('7 colours');
+  await expect(page.locator('#count')).toHaveText('7 colors');
 });
 
 test('renders groups in order and omits empty ones', async ({ page }) => {
@@ -111,7 +111,7 @@ test('renders groups in order and omits empty ones', async ({ page }) => {
   expect(headings).toEqual(['brand', 'text', 'surface', 'border']);
 });
 
-test('files the saturated colours under brand with exact hexes', async ({ page }) => {
+test('files the saturated colors under brand with exact hexes', async ({ page }) => {
   await open(page);
   const cells = await page.locator('.grid').first().locator('.cell').allTextContents();
   expect(cells.join(' ')).toContain('#635BFF');
@@ -196,7 +196,7 @@ test('Tailwind export copies a colors object', async ({ page }) => {
   expect(tw).toContain("'blurple': '#635BFF',");
 });
 
-test('JSON export copies parseable JSON carrying every colour', async ({ page }) => {
+test('JSON export copies parseable JSON carrying every color', async ({ page }) => {
   await open(page);
   await page.click('#copy-json');
   const [json] = await page.evaluate(() => window.__copied);
@@ -221,7 +221,7 @@ test('PNG and JPG each produce a download with a host-named file', async ({ page
     .toEqual(['hexer-stripe.com.png', 'hexer-stripe.com.jpg']);
 });
 
-test('the images tab lazily captures and renders pixel colours', async ({ page }) => {
+test('the images tab lazily captures and renders pixel colors', async ({ page }) => {
   await open(page);
   await expect(page.locator('.group')).toHaveCount(4);
 
@@ -265,9 +265,9 @@ test('a restricted page shows the block message and disables exports', async ({ 
   }
 });
 
-test('a page with no colours offers a retry', async ({ page }) => {
+test('a page with no colors offers a retry', async ({ page }) => {
   await open(page, { scan: { ...SCAN, records: [], vars: [] } });
-  await expect(page.locator('.msg')).toContainText('No colours found');
+  await expect(page.locator('.msg')).toContainText('No colors found');
   await expect(page.locator('.board .btn')).toHaveText('Retry');
 });
 

@@ -1,11 +1,11 @@
 import { deltaEok } from './oklab.js';
 
 /**
- * Merges perceptually near-identical colours.
+ * Merges perceptually near-identical colors.
  *
  * `entries` must arrive sorted by weight descending. Because the first
  * matching cluster wins, the heaviest member becomes the representative and
- * its exact declared value survives — we never average colours, since an
+ * its exact declared value survives — we never average colors, since an
  * average is a value the site never actually declared.
  */
 export function cluster(entries, deltaMax) {

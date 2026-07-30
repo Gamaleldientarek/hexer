@@ -175,12 +175,12 @@ async function init() {
   hostEl.textContent = palette.host;
 
   if (palette.stats.total === 0) {
-    showMessage('No colours found — the page may still be loading.', 'Retry',
+    showMessage('No colors found — the page may still be loading.', 'Retry',
       () => location.reload());
     return;
   }
 
-  document.getElementById('count').textContent = palette.stats.total + ' colours';
+  document.getElementById('count').textContent = palette.stats.total + ' colors';
   renderBoard(palette, board, copyHex);
   bindExports(palette);
   bindTabs(palette, board);

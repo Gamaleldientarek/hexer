@@ -19,7 +19,7 @@ const palette = {
 describe('layout', () => {
   const l = layout(palette);
 
-  it('produces one cell per colour', () => {
+  it('produces one cell per color', () => {
     expect(l.cells).toHaveLength(4);
   });
 
@@ -76,7 +76,7 @@ describe('toSvg', () => {
     expect(svg).toContain('height="' + l.height + '"');
   });
 
-  it('emits one rect per colour with the exact hex as fill', () => {
+  it('emits one rect per color with the exact hex as fill', () => {
     expect((svg.match(/<rect/g) || []).length).toBeGreaterThanOrEqual(4);
     expect(svg).toContain('fill="#635BFF"');
     expect(svg).toContain('fill="#0570DE"');
@@ -127,7 +127,7 @@ describe('drawSheet', () => {
     };
   };
 
-  it('fills a rect for every colour plus the background', () => {
+  it('fills a rect for every color plus the background', () => {
     const ctx = stubCtx();
     drawSheet(palette, ctx);
     expect(ctx.calls.filter(([op]) => op === 'fillRect').length).toBeGreaterThanOrEqual(5);
@@ -149,7 +149,7 @@ describe('drawSheet', () => {
     expect(ctx.canvas.height).toBe(l.height);
   });
 
-  it('writes a text label for every colour', () => {
+  it('writes a text label for every color', () => {
     const ctx = stubCtx();
     drawSheet(palette, ctx);
     const texts = ctx.calls.filter(([op]) => op === 'fillText').map(([, v]) => v);

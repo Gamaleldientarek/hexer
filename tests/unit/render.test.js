@@ -9,12 +9,12 @@ describe('GROUP_ORDER', () => {
 
 describe('spanFor', () => {
   // A 4-column grid spanning 1-2. The earlier 6-column/1-4 range squeezed
-  // siblings of a dominant colour to ~55px, which truncated the hex itself.
-  it('gives the full 2 columns to a colour that dominates its group', () => {
+  // siblings of a dominant color to ~55px, which truncated the hex itself.
+  it('gives the full 2 columns to a color that dominates its group', () => {
     expect(spanFor(95, 100)).toBe(2);
   });
 
-  it('gives 2 columns to a half-share colour', () => {
+  it('gives 2 columns to a half-share color', () => {
     expect(spanFor(50, 100)).toBe(2);
   });
 
@@ -35,11 +35,11 @@ describe('spanFor', () => {
   });
 
   it('sizes within the group, not the whole palette', () => {
-    // A brand colour at 6.8% of the PAGE but 80% of its GROUP must be large.
+    // A brand color at 6.8% of the PAGE but 80% of its GROUP must be large.
     expect(spanFor(6.8, 8.5)).toBe(2);
   });
 
-  it('is monotonic — a heavier colour never gets a smaller span', () => {
+  it('is monotonic — a heavier color never gets a smaller span', () => {
     let previous = 0;
     for (const w of [1, 10, 25, 40, 60, 80, 100]) {
       const span = spanFor(w, 100);

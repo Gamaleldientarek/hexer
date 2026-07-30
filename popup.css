@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------- tokens */
 /*
-   Hexer's chrome is greyscale on purpose. A colour tool with a colourful UI
+   Hexer's chrome is greyscale on purpose. A color tool with a colorful UI
    misreads its own swatches — surrounding hues shift perception. #F83200
    appears only on the mark, the active tab and focus states. Nothing else.
 
@@ -37,7 +37,7 @@
   --r-full: 999px;
 
   /* A swatch's own edge. Without it a #FFFFFF sample is an empty box on a
-     white popup — the one case where a colour tool must not be subtle. */
+     white popup — the one case where a color tool must not be subtle. */
   --swatch-edge: inset 0 0 0 1px rgba(0, 0, 0, 0.14);
   --swatch-edge-hover: inset 0 0 0 1px rgba(0, 0, 0, 0.32);
 

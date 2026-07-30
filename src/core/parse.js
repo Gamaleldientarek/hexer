@@ -12,7 +12,7 @@ const readAlpha = (tok) => {
   return Number.isFinite(n) ? clamp01(n) : 1;
 };
 
-/** Splits the inside of a colour function into value tokens plus optional alpha. */
+/** Splits the inside of a color function into value tokens plus optional alpha. */
 const splitArgs = (inner) => {
   const [main, alphaPart] = inner.split('/');
   const parts = main.trim().split(/[\s,]+/).filter(Boolean);
@@ -75,8 +75,8 @@ const parseOklch = (inner) => {
 };
 
 /**
- * Parses a CSS colour string into { r, g, b, a }. Returns null for anything
- * that is not a concrete colour — keywords, gradients, urls, malformed input.
+ * Parses a CSS color string into { r, g, b, a }. Returns null for anything
+ * that is not a concrete color — keywords, gradients, urls, malformed input.
  *
  * css-scan.js normalises harvested values through the browser's own CSS parser,
  * so in practice this receives rgb()/rgba(). Hex, hsl() and oklch() are

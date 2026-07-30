@@ -1,9 +1,9 @@
 {
   "name": "hexer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "type": "module",
-  "description": "Get the exact colour palette of any website, straight from its CSS.",
+  "description": "Get the exact color palette of any website, straight from its CSS.",
   "license": "MIT",
   "scripts": {
     "test": "vitest run",

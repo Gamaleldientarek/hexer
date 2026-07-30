@@ -24,16 +24,16 @@ const sumWhere = (sources, predicate) => {
 };
 
 /**
- * Classifies one colour into brand / text / surface / border.
+ * Classifies one color into brand / text / surface / border.
  *
- * BRAND means saturated, full stop. An earlier draft also required the colour
+ * BRAND means saturated, full stop. An earlier draft also required the color
  * to cover under 20% of the page, reasoning that accents are used sparingly.
- * That was wrong: a site whose hero is a full-bleed brand colour would have had
- * that colour filed as a surface and a stray 100px chip promoted to brand.
- * Area orders colours within a group; it does not decide which group.
+ * That was wrong: a site whose hero is a full-bleed brand color would have had
+ * that color filed as a surface and a stray 100px chip promoted to brand.
+ * Area orders colors within a group; it does not decide which group.
  *
  * The spec listed "any text source wins" and "assign by whichever source
- * weighs more" as separate rules, which conflict when a colour is used as both
+ * weighs more" as separate rules, which conflict when a color is used as both
  * text and fill. The weight comparison is the general case and subsumes the
  * other: text with no fill weight always wins the comparison.
  *

@@ -19,17 +19,17 @@ const weightOf = (result, value, source) =>
     .filter((r) => r.value === value && (!source || r.source === source))
     .reduce((s, r) => s + r.weight, 0);
 
-test('hero-dominant: the full-bleed brand colour ranks first', async ({ page }) => {
+test('hero-dominant: the full-bleed brand color ranks first', async ({ page }) => {
   const palette = buildPalette(await scan(page, 'hero-dominant.html'));
   expect(palette.groups.brand[0].hex).toBe('#F83200');
   expect(palette.groups.brand[0].weight).toBeGreaterThan(palette.groups.brand[1].weight * 100);
 });
 
-test('vars-root: custom-property names attach to their colours', async ({ page }) => {
+test('vars-root: custom-property names attach to their colors', async ({ page }) => {
   const result = await scan(page, 'vars-root.html');
   expect(result.vars.map((v) => v.name)).toContain('--brand');
   expect(result.vars.map((v) => v.name)).toContain('--ink');
-  expect(result.vars.map((v) => v.name)).not.toContain('--not-a-colour');
+  expect(result.vars.map((v) => v.name)).not.toContain('--not-a-color');
 
   const palette = buildPalette(result);
   const all = Object.values(palette.groups).flat();
@@ -37,13 +37,13 @@ test('vars-root: custom-property names attach to their colours', async ({ page }
   expect(all.find((e) => e.hex === '#111111').varName).toBe('--ink');
 });
 
-test('vars-noise: non-colour custom properties are rejected without probing', async ({ page }) => {
-  // Spike A found sites with ~2,000 custom properties, mostly non-colours.
-  // COLOUR_SHAPED must filter them out or the scan blows its time budget.
+test('vars-noise: non-color custom properties are rejected without probing', async ({ page }) => {
+  // Spike A found sites with ~2,000 custom properties, mostly non-colors.
+  // COLOR_SHAPED must filter them out or the scan blows its time budget.
   const result = await scan(page, 'vars-noise.html');
   const names = result.vars.map((v) => v.name);
   expect(names).toContain('--brand');
-  expect(names).toContain('--ink');          // rebeccapurple, a named colour
+  expect(names).toContain('--ink');          // rebeccapurple, a named color
   expect(names).not.toContain('--layout-gap');
   expect(names).not.toContain('--animate-bounce');
   expect(names).not.toContain('--z-modal');
@@ -83,7 +83,7 @@ test('text-heavy: text weight beats a small saturated box', async ({ page }) => 
     .toBeGreaterThan(weightOf(result, 'rgb(248, 50, 0)', 'background-color'));
 });
 
-test('shadow-dom: colours inside an open shadow root are found', async ({ page }) => {
+test('shadow-dom: colors inside an open shadow root are found', async ({ page }) => {
   const result = await scan(page, 'shadow-dom.html');
   expect(weightOf(result, 'rgb(0, 85, 255)', 'background-color')).toBeGreaterThan(0);
 });

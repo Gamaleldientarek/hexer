@@ -1,7 +1,7 @@
 import { GROUP_ORDER } from '../popup/render.js';
 
 /**
- * Derives a CSS-safe, unique name for a colour. Prefers the site's own
+ * Derives a CSS-safe, unique name for a color. Prefers the site's own
  * custom-property name — pasting a palette back into a codebase is far more
  * useful when the names match what the site already calls them.
  */

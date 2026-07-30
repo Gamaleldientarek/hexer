@@ -1,7 +1,7 @@
 /**
- * Aggregates raw colour records into one entry per distinct colour value,
+ * Aggregates raw color records into one entry per distinct color value,
  * carrying the total painted-area weight, a per-source breakdown, and each
- * colour's share of the page.
+ * color's share of the page.
  *
  * Weight — not occurrence count — is the ranking metric: a 1px border used
  * 640 times must not outrank one full-bleed hero.

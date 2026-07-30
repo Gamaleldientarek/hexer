@@ -22,10 +22,10 @@ When you click the icon on a page, Hexer reads:
 
 | What | Why |
 |---|---|
-| The page's computed CSS — colours from backgrounds, text, borders, outlines, gradients, SVG fills and strokes, pseudo-elements, and CSS custom properties | This is the entire point of the extension: it is where the colours live |
+| The page's computed CSS — colors from backgrounds, text, borders, outlines, gradients, SVG fills and strokes, pseudo-elements, and CSS custom properties | This is the entire point of the extension: it is where the colors live |
 | The page's hostname, e.g. `stripe.com` | Shown in the popup header, and used to name exported files |
-| The size and position of elements on the page | To calculate how much of the page each colour actually paints |
-| A screenshot of the visible tab — **only if you click the "From images" tab** | To extract colours that exist only inside logos and images |
+| The size and position of elements on the page | To calculate how much of the page each color actually paints |
+| A screenshot of the visible tab — **only if you click the "From images" tab** | To extract colors that exist only inside logos and images |
 
 That is the complete list.
 
@@ -56,7 +56,7 @@ Specifically:
 The "From images" tab uses Chrome's `captureVisibleTab` to take a picture of the visible part of the current tab. This sounds more invasive than it is, so to be exact:
 
 - It only runs **when you click that tab**. It never runs when the popup opens.
-- The image is decoded in memory, shrunk to at most 200 pixels on its longest edge, and reduced to a handful of average colours.
+- The image is decoded in memory, shrunk to at most 200 pixels on its longest edge, and reduced to a handful of average colors.
 - The image is **never saved to disk and never transmitted**. It exists only as a variable, and is discarded immediately.
 - If you never click "From images", no screenshot is ever taken.
 
@@ -71,7 +71,7 @@ Hexer requests two permissions. That is the complete manifest.
 
 **`activeTab`** — grants temporary access to the single tab you are looking at, and only at the moment you click the extension icon. Access ends when you navigate away. This is why Chrome shows **no permission warning** when you install Hexer: it cannot read your data on all sites, because it was never given that ability.
 
-**`scripting`** — allows Hexer to run its colour-reading function inside that one tab so it can inspect the page's styles.
+**`scripting`** — allows Hexer to run its color-reading function inside that one tab so it can inspect the page's styles.
 
 Hexer deliberately does **not** request: `<all_urls>` or any host permission, `storage`, `cookies`, `history`, `tabs` (beyond what `activeTab` grants), `downloads`, `identity`, or a background service worker.
 
@@ -89,9 +89,9 @@ For transparency, this is what is declared on the Web Store listing:
 | Location | Not collected |
 | Web history | Not collected |
 | User activity | Not collected |
-| **Website content** | **Accessed** — read locally to extract colours. Never collected, stored or transmitted |
+| **Website content** | **Accessed** — read locally to extract colors. Never collected, stored or transmitted |
 
-Hexer complies with the Chrome Web Store Limited Use requirements: data is used solely for the single user-facing purpose of displaying a page's colour palette, is never transferred to anyone, is never used for advertising, and is never read by any person — because it never leaves your device for anyone to read.
+Hexer complies with the Chrome Web Store Limited Use requirements: data is used solely for the single user-facing purpose of displaying a page's color palette, is never transferred to anyone, is never used for advertising, and is never read by any person — because it never leaves your device for anyone to read.
 
 ## Children
 

@@ -35,11 +35,11 @@ describe('buildPalette', () => {
   });
 
   // A page needs a dominant surface for an accent to read as sparing. With a
-  // single record that colour is 100% of the painted area, which roles.js
-  // correctly files as a surface rather than a brand colour.
+  // single record that color is 100% of the painted area, which roles.js
+  // correctly files as a surface rather than a brand color.
   const PAGE_BG = { value: 'rgb(255, 255, 255)', source: 'background-color', weight: 9000, count: 1 };
 
-  it('attaches the site custom-property name when the colour matches', () => {
+  it('attaches the site custom-property name when the color matches', () => {
     const p = buildPalette(scan(
       [PAGE_BG, { value: 'rgb(248, 50, 0)', source: 'background-color', weight: 100, count: 1 }],
       { vars: [{ name: '--brand-primary', value: 'rgb(248, 50, 0)' }] },
@@ -55,7 +55,7 @@ describe('buildPalette', () => {
     expect(p.groups.brand[0].varName).toBeNull();
   });
 
-  it('drops colours below the alpha threshold', () => {
+  it('drops colors below the alpha threshold', () => {
     const p = buildPalette(scan([
       { value: 'rgba(0, 0, 0, 0.01)', source: 'background-color', weight: 500, count: 1 },
       { value: 'rgb(255, 255, 255)', source: 'background-color', weight: 100, count: 1 },
@@ -73,7 +73,7 @@ describe('buildPalette', () => {
     expect(p.stats.total).toBe(1);
   });
 
-  it('merges near-identical colours before assigning roles', () => {
+  it('merges near-identical colors before assigning roles', () => {
     const p = buildPalette(scan([
       PAGE_BG,
       { value: 'rgb(99, 91, 255)', source: 'background-color', weight: 100, count: 1 },

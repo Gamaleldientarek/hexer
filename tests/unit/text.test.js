@@ -28,8 +28,8 @@ describe('nameFor', () => {
   });
 
   it('lowercases and kebab-cases awkward variable names', () => {
-    expect(nameFor(entry('#000000', 'text', 1, '--Brand_Primary Colour'), 'text', 0, new Set()))
-      .toBe('brand-primary-colour');
+    expect(nameFor(entry('#000000', 'text', 1, '--Brand_Primary Color'), 'text', 0, new Set()))
+      .toBe('brand-primary-color');
   });
 
   it('suffixes duplicates instead of colliding', () => {
@@ -52,7 +52,7 @@ describe('toCssVars', () => {
     expect(css.trimEnd().endsWith('}')).toBe(true);
   });
 
-  it('emits one declaration per colour with the exact hex', () => {
+  it('emits one declaration per color with the exact hex', () => {
     expect(css).toContain('--blurple: #635BFF;');
     expect(css).toContain('--brand-2: #0570DE;');
     expect(css).toContain('--dark: #0A2540;');
@@ -80,7 +80,7 @@ describe('toTailwind', () => {
     expect(tw).toContain('colors: {');
   });
 
-  it('nests colours under their role', () => {
+  it('nests colors under their role', () => {
     expect(tw).toContain('brand: {');
     expect(tw).toContain("'blurple': '#635BFF',");
   });
@@ -98,7 +98,7 @@ describe('toJson', () => {
     expect(json.generated).toBe('2026-07-30T10:00:00.000Z');
   });
 
-  it('flattens every colour into one array with its role', () => {
+  it('flattens every color into one array with its role', () => {
     expect(json.colors).toHaveLength(4);
     expect(json.colors[0]).toMatchObject({ hex: '#635BFF', role: 'brand', varName: '--blurple' });
   });
@@ -128,7 +128,7 @@ describe('empty palette', () => {
     expect(toCssVars(empty)).toContain(':root {');
   });
 
-  it('still produces parseable JSON with no colours', () => {
+  it('still produces parseable JSON with no colors', () => {
     expect(JSON.parse(toJson(empty, { now: 'X' })).colors).toEqual([]);
   });
 });

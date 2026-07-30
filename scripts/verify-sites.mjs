@@ -1,6 +1,6 @@
 /**
  * Success criterion 1: on real sites, does the site's true primary brand
- * colour land in the BRAND group, top two positions?
+ * color land in the BRAND group, top two positions?
  *
  * Runs the real scanner against real pages and prints what it found. Expected
  * hexes are recorded as hints, not assertions — sites redesign, and a script
@@ -46,7 +46,7 @@ for (const site of SITES) {
       expected: site.expect,
       brand: top('brand'),
       surface: top('surface', 2),
-      colours: palette.stats.total,
+      colors: palette.stats.total,
       vars: scan.vars.length,
       ms: scan.stats.durationMs,
       els: scan.stats.elements,
@@ -62,7 +62,7 @@ await browser.close();
 
 for (const r of rows) {
   if (r.error) { console.log(`\n### ${r.site}\n  ERROR: ${r.error}`); continue; }
-  console.log(`\n### ${r.site}   (${r.colours} colours, ${r.vars} vars, ${r.els} els, ${r.ms}ms${r.sampled ? ', SAMPLED' : ''})`);
+  console.log(`\n### ${r.site}   (${r.colors} colors, ${r.vars} vars, ${r.els} els, ${r.ms}ms${r.sampled ? ', SAMPLED' : ''})`);
   console.log(`  expected : ${r.expected}`);
   console.log(`  brand    : ${r.brand || '(none)'}`);
   console.log(`  surface  : ${r.surface || '(none)'}`);

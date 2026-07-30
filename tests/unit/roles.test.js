@@ -47,12 +47,12 @@ describe('assignRole', () => {
     expect(assignRole(entry(NEAR_BLACK, { color: 900 }, 18), OPTS)).toBe('text');
   });
 
-  it('assigns BRAND to a saturated colour used sparingly', () => {
+  it('assigns BRAND to a saturated color used sparingly', () => {
     expect(assignRole(entry(ORANGE, { 'background-color': 200 }, 6.8), OPTS)).toBe('brand');
   });
 
-  it('still assigns BRAND to a saturated colour that dominates the page', () => {
-    // There is no area cap. A full-bleed brand hero is the brand colour, not
+  it('still assigns BRAND to a saturated color that dominates the page', () => {
+    // There is no area cap. A full-bleed brand hero is the brand color, not
     // a surface — the earlier 20% cap got this backwards.
     expect(assignRole(entry(ORANGE, { 'background-color': 9000 }, 98), OPTS)).toBe('brand');
   });
@@ -86,21 +86,21 @@ describe('assignRole', () => {
     expect(assignRole(entry(NEAR_BLACK, { color: 100, 'background-color': 900 }, 20), OPTS)).toBe('surface');
   });
 
-  it('prefers text over border when a colour is used as both', () => {
+  it('prefers text over border when a color is used as both', () => {
     expect(assignRole(entry(GREY, { color: 500, 'border-top-color': 20 }, 9), OPTS)).toBe('text');
   });
 
-  it('does not assign BORDER when a fill also uses the colour', () => {
+  it('does not assign BORDER when a fill also uses the color', () => {
     expect(assignRole(entry(GREY, { 'border-top-color': 20, 'background-color': 500 }, 9), OPTS)).toBe('surface');
   });
 
-  it('treats a colour at exactly the chroma floor as eligible for BRAND', () => {
+  it('treats a color at exactly the chroma floor as eligible for BRAND', () => {
     const e = entry(ORANGE, { 'background-color': 100 }, 5);
     e.oklch = { ...e.oklch, C: 0.08 };
     expect(assignRole(e, OPTS)).toBe('brand');
   });
 
-  it('treats a colour just below the chroma floor as SURFACE', () => {
+  it('treats a color just below the chroma floor as SURFACE', () => {
     const e = entry(ORANGE, { 'background-color': 100 }, 5);
     e.oklch = { ...e.oklch, C: 0.079 };
     expect(assignRole(e, OPTS)).toBe('surface');

@@ -39,7 +39,7 @@ describe('oklabToOklch', () => {
 });
 
 describe('oklchToSrgb', () => {
-  it('round-trips a saturated colour within 2/255', () => {
+  it('round-trips a saturated color within 2/255', () => {
     const input = { r: 99, g: 91, b: 255 };
     const out = oklchToSrgb(oklabToOklch(srgbToOklab(input)));
     expect(Math.abs(out.r - input.r)).toBeLessThanOrEqual(2);
@@ -57,7 +57,7 @@ describe('oklchToSrgb', () => {
 });
 
 describe('deltaEok', () => {
-  it('is zero for identical colours', () => {
+  it('is zero for identical colors', () => {
     const lab = srgbToOklab({ r: 20, g: 30, b: 40 });
     expect(deltaEok(lab, lab)).toBe(0);
   });
@@ -68,7 +68,7 @@ describe('deltaEok', () => {
     expect(deltaEok(a, b)).toBeLessThan(0.02);
   });
 
-  it('is over 0.02 for visibly different colours', () => {
+  it('is over 0.02 for visibly different colors', () => {
     const a = srgbToOklab({ r: 248, g: 50, b: 0 });
     const b = srgbToOklab({ r: 0, g: 85, b: 255 });
     expect(deltaEok(a, b)).toBeGreaterThan(0.02);

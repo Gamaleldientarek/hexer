@@ -93,7 +93,7 @@ await store.setContent(`
         0 2px 8px rgba(12,14,20,.06)}
   </style>
   <div class="copy">
-    <h1>The exact colours,<br>read from the CSS.</h1>
+    <h1>The exact colors,<br>read from the CSS.</h1>
     <p>Not guessed from a screenshot. Every value is the one the site
        declared &mdash; with the <b>variable name</b> behind it and how much
        of the page it actually paints.</p>

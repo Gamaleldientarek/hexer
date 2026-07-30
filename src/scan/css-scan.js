@@ -1,5 +1,5 @@
 /**
- * Harvests every colour a page paints, weighted by painted area.
+ * Harvests every color a page paints, weighted by painted area.
  *
  * CONSTRAINT: this function is serialised and injected via
  * chrome.scripting.executeScript({ func }). It may not import anything or
@@ -13,18 +13,18 @@ export function scanPage({ elementCap }) {
     'SCRIPT', 'STYLE', 'LINK', 'META', 'TITLE', 'HEAD',
     'NOSCRIPT', 'TEMPLATE', 'BR', 'WBR',
   ]);
-  const NON_COLOURS = new Set([
+  const NON_COLORS = new Set([
     '', 'transparent', 'none', 'currentcolor', 'auto', 'inherit', 'initial', 'unset',
     'rgba(0, 0, 0, 0)',
   ]);
-  const COLOUR_RE =
+  const COLOR_RE =
     /(?:rgba?|hsla?|oklch|oklab|lab|lch|color)\([^)]*\)|#[0-9a-fA-F]{3,8}\b/g;
-  // Cheap gate before the resolve probe: a hex, a colour function, or a bare
-  // word short enough to be a named colour such as rebeccapurple. Rejects
+  // Cheap gate before the resolve probe: a hex, a color function, or a bare
+  // word short enough to be a named color such as rebeccapurple. Rejects
   // --layout-gap: 24px and --animate-bounce: bounce 1s infinite without paying
   // for a style recalculation. Each alternative carries its own end anchor —
   // the function branch must NOT be anchored, or "rgb(0, 0, 0)" would fail.
-  const COLOUR_SHAPED =
+  const COLOR_SHAPED =
     /^(?:#[0-9a-fA-F]{3,8}$|(?:rgba?|hsla?|hwb|oklch|oklab|lab|lch|color|color-mix)\(|[a-z]{3,20}$)/i;
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const OPACITY_MIN = 0.05;
@@ -36,7 +36,7 @@ export function scanPage({ elementCap }) {
   const add = (value, source, weight) => {
     if (!value || !(weight > 0)) return;
     const v = String(value).trim();
-    if (NON_COLOURS.has(v.toLowerCase())) return;
+    if (NON_COLORS.has(v.toLowerCase())) return;
 
     const key = v + '|' + source;
     let entry = records.get(key);
@@ -49,18 +49,18 @@ export function scanPage({ elementCap }) {
   };
 
   // ------------------------------------------------------------------ probe
-  // Let the browser's own CSS parser resolve any colour syntax — named
-  // colours, hsl(), color-mix(), whatever ships next year. Cheaper and far
-  // more correct than reimplementing CSS colour parsing here.
+  // Let the browser's own CSS parser resolve any color syntax — named
+  // colors, hsl(), color-mix(), whatever ships next year. Cheaper and far
+  // more correct than reimplementing CSS color parsing here.
 
   const probe = document.createElement('span');
   probe.setAttribute('style', 'display:none !important');
   document.documentElement.appendChild(probe);
 
-  const resolveColour = (raw) => {
+  const resolveColor = (raw) => {
     if (!raw) return null;
     const v = String(raw).trim();
-    if (NON_COLOURS.has(v.toLowerCase())) return null;
+    if (NON_COLORS.has(v.toLowerCase())) return null;
     probe.style.color = '';
     try { probe.style.color = v; } catch (e) { return null; }
     if (probe.style.color === '') return null;
@@ -68,7 +68,7 @@ export function scanPage({ elementCap }) {
   };
 
   // ------------------------------------------------------------ normalisation
-  // Chrome serialises modern colour functions in their own space, so computed
+  // Chrome serialises modern color functions in their own space, so computed
   // styles hand back oklab(), lab(), lch() and oklch(0 0 none / 0.54) verbatim.
   // Tailwind v4 sites are almost entirely oklab/lab: on tailwindcss.com, 222 of
   // 225 distinct values arrived in those forms.
@@ -122,15 +122,15 @@ export function scanPage({ elementCap }) {
       if (!prop.startsWith('--')) continue;
 
       const raw = String(value).trim();
-      if (!COLOUR_SHAPED.test(raw)) continue;
+      if (!COLOR_SHAPED.test(raw)) continue;
 
-      const resolved = resolveColour(raw);
+      const resolved = resolveColor(raw);
       if (resolved) vars.push({ name: prop, value: resolved });
     }
   } catch (e) { /* Typed OM unavailable: variable names are simply absent */ }
 
   const metaEl = document.querySelector('meta[name="theme-color"]');
-  const themeColor = metaEl ? resolveColour(metaEl.getAttribute('content')) : null;
+  const themeColor = metaEl ? resolveColor(metaEl.getAttribute('content')) : null;
 
   // ------------------------------------------------------------- collection
 
@@ -164,7 +164,7 @@ export function scanPage({ elementCap }) {
 
     info.set(el, {
       cs, rect, area,
-      hasBg: !!bg && !NON_COLOURS.has(bg.toLowerCase()),
+      hasBg: !!bg && !NON_COLORS.has(bg.toLowerCase()),
     });
   }
 
@@ -195,7 +195,7 @@ export function scanPage({ elementCap }) {
     if (d.hasBg) add(cs.backgroundColor, 'background-color', own);
 
     if (cs.backgroundImage && cs.backgroundImage !== 'none' && own > 0) {
-      const stops = cs.backgroundImage.match(COLOUR_RE) || [];
+      const stops = cs.backgroundImage.match(COLOR_RE) || [];
       for (const stop of stops) add(stop, 'gradient-stop', own / stops.length);
     }
 
@@ -259,7 +259,7 @@ export function scanPage({ elementCap }) {
 
   probe.remove();
 
-  // Normalise every harvested value to sRGB. Two syntaxes for the same colour
+  // Normalise every harvested value to sRGB. Two syntaxes for the same color
   // collapse to one string here; rank() keys by value, so it merges them.
   const normalisedRecords = [...records.values()]
     .map((r) => ({ ...r, value: toRgbString(r.value) }));

@@ -2,7 +2,7 @@
 
 # Hexer
 
-**See the exact colours a website declares — read from its CSS, not guessed from a screenshot.**
+**See the exact colors a website declares — read from its CSS, not guessed from a screenshot.**
 
 One click. No account, no subscription, no server, no network calls.
 
@@ -54,7 +54,7 @@ Done. Open any website and click the Hexer icon.
 ---
 
 > ### 🎨 Try it on `tailwindcss.com` first
-> It declares **204 distinct colours** in `oklab()` — precisely what screenshot-based tools cannot read.
+> It declares **204 distinct colors** in `oklab()` — precisely what screenshot-based tools cannot read.
 > Then try **`stripe.com`**, where Hexer recovers **437 CSS variable names**.
 
 ---
@@ -86,9 +86,9 @@ To update later: `git pull`, then click the refresh arrow on the Hexer card in `
 
 ## Why
 
-Every colour-palette extension I could find works the same way: it takes a **screenshot** of the page and runs a quantiser over the pixels. Three problems are baked into that.
+Every color-palette extension I could find works the same way: it takes a **screenshot** of the page and runs a quantiser over the pixels. Three problems are baked into that.
 
-1. **The colours are guesses.** Quantising pixels returns an approximation, not the value the site declared. You get `#f4932a` when the brand colour is a clean `#F4932A` — or something further off.
+1. **The colors are guesses.** Quantising pixels returns an approximation, not the value the site declared. You get `#f4932a` when the brand color is a clean `#F4932A` — or something further off.
 2. **It only sees the viewport.** Everything below the fold is invisible to it.
 3. **It has no idea what anything is.** A screenshot cannot tell you that `#635BFF` is stored in `--blurple`, or that it paints 6.8% of the page.
 
@@ -100,21 +100,21 @@ The market leader charges $2.50/mo, $30/yr or $99 lifetime and requires an accou
 
 Measured on live sites, recorded in [`docs/verification.md`](docs/verification.md):
 
-- **Exact declared values.** Never averaged, never approximated. Where two values sit within a hair of each other, the heavier one's literal hex survives — an average is a colour the site never wrote.
-- **The variable name behind each colour.** 1,379 recovered on github.com, 437 on stripe.com, 296 on tailwindcss.com.
-- **Completeness.** 204 distinct colours on tailwindcss.com, 98 on stripe.com — the whole page, not the visible slice.
-- **Real dominance.** Each colour's share of *painted area*, so a 1px border used 640 times does not outrank one full-bleed hero.
+- **Exact declared values.** Never averaged, never approximated. Where two values sit within a hair of each other, the heavier one's literal hex survives — an average is a color the site never wrote.
+- **The variable name behind each color.** 1,379 recovered on github.com, 437 on stripe.com, 296 on tailwindcss.com.
+- **Completeness.** 204 distinct colors on tailwindcss.com, 98 on stripe.com — the whole page, not the visible slice.
+- **Real dominance.** Each color's share of *painted area*, so a 1px border used 640 times does not outrank one full-bleed hero.
 - **Speed.** 17–113 ms across ten live sites.
 
-Colours are grouped into **brand / text / surface / border**, and swatch size shows dominance within each group.
+Colors are grouped into **brand / text / surface / border**, and swatch size shows dominance within each group.
 
-**On that grouping, plainly:** it sorts by saturation and prominence, and it is a convenience rather than a promise. On a site whose primary colour lives on a handful of small buttons while a decorative gradient covers half the page, the gradient ranks higher. Three of the ten sites tested have no single chromatic brand colour at all. Every colour is found and exact — which group it lands in is best-effort. The measured results, including where this falls short, are in [`docs/verification.md`](docs/verification.md).
+**On that grouping, plainly:** it sorts by saturation and prominence, and it is a convenience rather than a promise. On a site whose primary color lives on a handful of small buttons while a decorative gradient covers half the page, the gradient ranks higher. Three of the ten sites tested have no single chromatic brand color at all. Every color is found and exact — which group it lands in is best-effort. The measured results, including where this falls short, are in [`docs/verification.md`](docs/verification.md).
 
 ## What it reads
 
-`background-color`, `color`, all four `border-*-color`, `outline-color`, `column-rule-color`, `text-decoration-color`, `caret-color`, gradient colour stops, SVG `fill` and `stroke`, `::before` / `::after` pseudo-elements, open shadow DOM, and `--*` custom properties.
+`background-color`, `color`, all four `border-*-color`, `outline-color`, `column-rule-color`, `text-decoration-color`, `caret-color`, gradient color stops, SVG `fill` and `stroke`, `::before` / `::after` pseudo-elements, open shadow DOM, and `--*` custom properties.
 
-Modern colour syntax included — `oklch()`, `oklab()`, `lab()`, `lch()`, `color-mix()` — because every value is normalised through the browser's own parser rather than a hand-written one.
+Modern color syntax included — `oklch()`, `oklab()`, `lab()`, `lch()`, `color-mix()` — because every value is normalised through the browser's own parser rather than a hand-written one.
 
 ## Exports
 
@@ -122,11 +122,11 @@ Click any swatch to copy its hex. Or take the whole palette as:
 
 - **CSS custom properties**, reusing the site's own variable names
 - **Tailwind** `theme.colors` fragment
-- **JSON**, with painted-area share, usage count and source breakdown per colour
+- **JSON**, with painted-area share, usage count and source breakdown per color
 - **PNG** or **JPEG** swatch sheet
 - **Figma** — paste straight in as editable vector rectangles
 
-A second tab quantises a screenshot, for colours that only exist inside logos and images.
+A second tab quantises a screenshot, for colors that only exist inside logos and images.
 
 ## Privacy
 
@@ -161,9 +161,9 @@ No bundler, no transpiler. Plain ES modules, loaded directly by the popup.
 Hexer cannot see:
 
 - Cross-origin iframes, or closed shadow roots
-- Colours that exist only inside images — use the **From images** tab for those
+- Colors that exist only inside images — use the **From images** tab for those
 - Custom properties defined only under an inactive theme, e.g. `.dark { --bg: #000 }` while light mode is showing. Hexer reports the palette as currently rendered.
-- Colours below the alpha threshold, or on elements with zero painted area
+- Colors below the alpha threshold, or on elements with zero painted area
 
 Pages above 20,000 elements are sampled, and the UI says so rather than pretending otherwise.
 
