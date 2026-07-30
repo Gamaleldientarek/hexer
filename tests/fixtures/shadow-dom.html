@@ -1,0 +1,12 @@
+<!doctype html><meta charset="utf-8"><title>shadow</title>
+<style>html,body{margin:0}</style>
+<my-card></my-card>
+<script>
+  class MyCard extends HTMLElement {
+    connectedCallback() {
+      const root = this.attachShadow({ mode: 'open' });
+      root.innerHTML = '<style>.s{display:block;width:500px;height:500px;background:#0055FF}</style><div class="s"></div>';
+    }
+  }
+  customElements.define('my-card', MyCard);
+</script>

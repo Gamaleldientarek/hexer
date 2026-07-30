@@ -3,9 +3,7 @@ import { srgbToOklab, oklabToOklch } from './oklab.js';
 import { rank } from './rank.js';
 import { cluster } from './cluster.js';
 import { assignRole } from './roles.js';
-import {
-  ALPHA_MIN, CLUSTER_DELTA_E, CHROMA_BRAND_MIN, BRAND_AREA_MAX_PCT,
-} from './constants.js';
+import { ALPHA_MIN, CLUSTER_DELTA_E, CHROMA_BRAND_MIN } from './constants.js';
 
 const GROUP_KEYS = ['brand', 'text', 'surface', 'border'];
 
@@ -48,11 +46,7 @@ export function buildPalette(scan) {
   const groups = { brand: [], text: [], surface: [], border: [] };
 
   for (const e of clustered) {
-    const role = assignRole(e, {
-      themeRgb,
-      chromaMin: CHROMA_BRAND_MIN,
-      brandAreaMaxPct: BRAND_AREA_MAX_PCT,
-    });
+    const role = assignRole(e, { themeRgb, chromaMin: CHROMA_BRAND_MIN });
     groups[role].push({ ...e, role, varName: varsByHex.get(e.hex) ?? null });
   }
 

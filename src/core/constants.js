@@ -3,11 +3,22 @@
  * a threshold. Starting values tuned against tests/fixtures.
  */
 
-/** OKLCH chroma floor for a colour to qualify as BRAND. */
-export const CHROMA_BRAND_MIN = 0.06;
-
-/** Above this share of painted area, a saturated colour is a SURFACE not a BRAND. */
-export const BRAND_AREA_MAX_PCT = 20;
+/**
+ * OKLCH chroma floor for a colour to qualify as BRAND.
+ *
+ * Measured against real palettes. Brand colours cluster at 0.104 to 0.306
+ * (#040038 AZMX navy 0.104, #5E6AD2 Linear 0.159, #635BFF Stripe 0.235,
+ * #F83200 0.236, #001AFF 0.306). Neutrals sit at 0.000 to 0.037 (white, greys,
+ * #E3E8EE 0.010, #425466 0.037). #0A2540 Stripe navy is the only borderline
+ * case at 0.060, and it reads as a dark surface, so 0.08 puts it there.
+ *
+ * There is deliberately NO area cap. An earlier draft required a brand colour
+ * to cover under 20% of the page, on the theory that accents are used
+ * sparingly. The hero fixture disproved it: a full-bleed orange hero is the
+ * brand colour, not a surface. Area decides ordering within a group, never
+ * membership of it.
+ */
+export const CHROMA_BRAND_MIN = 0.08;
 
 /**
  * OKLab distance below which two colours merge.

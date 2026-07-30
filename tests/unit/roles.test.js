@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { assignRole, TEXT_SOURCES, EDGE_SOURCES } from '../../src/core/roles.js';
 import { srgbToOklab, oklabToOklch } from '../../src/core/oklab.js';
 
-const OPTS = { themeRgb: null, chromaMin: 0.06, brandAreaMaxPct: 20 };
+const OPTS = { themeRgb: null, chromaMin: 0.08 };
 
 const entry = (rgb, sources, weightPct = 5) => ({
   rgb,
@@ -51,8 +51,17 @@ describe('assignRole', () => {
     expect(assignRole(entry(ORANGE, { 'background-color': 200 }, 6.8), OPTS)).toBe('brand');
   });
 
-  it('assigns SURFACE to a saturated colour that covers too much of the page', () => {
-    expect(assignRole(entry(ORANGE, { 'background-color': 9000 }, 62), OPTS)).toBe('surface');
+  it('still assigns BRAND to a saturated colour that dominates the page', () => {
+    // There is no area cap. A full-bleed brand hero is the brand colour, not
+    // a surface — the earlier 20% cap got this backwards.
+    expect(assignRole(entry(ORANGE, { 'background-color': 9000 }, 98), OPTS)).toBe('brand');
+  });
+
+  it('assigns SURFACE to a dark low-chroma navy rather than BRAND', () => {
+    // #0A2540 sits at chroma 0.060, below the 0.08 floor. It reads as a dark
+    // surface, which is the borderline case the floor was chosen to place.
+    expect(assignRole(entry({ r: 10, g: 37, b: 64 }, { 'background-color': 500 }, 30), OPTS))
+      .toBe('surface');
   });
 
   it('assigns SURFACE to a desaturated fill', () => {
@@ -83,14 +92,16 @@ describe('assignRole', () => {
     expect(assignRole(entry(GREY, { 'border-top-color': 20, 'background-color': 500 }, 9), OPTS)).toBe('surface');
   });
 
-  it('treats a colour at exactly the area cap as still eligible for BRAND', () => {
-    expect(assignRole(entry(ORANGE, { 'background-color': 100 }, 20), OPTS)).toBe('brand');
-  });
-
   it('treats a colour at exactly the chroma floor as eligible for BRAND', () => {
     const e = entry(ORANGE, { 'background-color': 100 }, 5);
-    e.oklch = { ...e.oklch, C: 0.06 };
+    e.oklch = { ...e.oklch, C: 0.08 };
     expect(assignRole(e, OPTS)).toBe('brand');
+  });
+
+  it('treats a colour just below the chroma floor as SURFACE', () => {
+    const e = entry(ORANGE, { 'background-color': 100 }, 5);
+    e.oklch = { ...e.oklch, C: 0.079 };
+    expect(assignRole(e, OPTS)).toBe('surface');
   });
 
   it('falls back to SURFACE for an entry with no recognised sources', () => {

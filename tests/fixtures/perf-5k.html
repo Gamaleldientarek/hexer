@@ -1,0 +1,12 @@
+<!doctype html><meta charset="utf-8"><title>perf</title>
+<style>html,body{margin:0}.c{width:8px;height:8px;display:inline-block}</style>
+<div id="mount"></div>
+<script>
+  const mount = document.getElementById('mount');
+  let html = '';
+  for (let i = 0; i < 5000; i++) {
+    const hue = i % 360;
+    html += '<span class="c" style="background:hsl(' + hue + ',60%,50%)"></span>';
+  }
+  mount.innerHTML = html;
+</script>
