@@ -140,6 +140,8 @@ No `<all_urls>`, no host permissions, no storage, no background service worker. 
 
 There is no `fetch`, no `XMLHttpRequest`, no analytics and no storage anywhere in the source. There is also **no build step** — the published package is the source, so you can verify all of that by reading it directly rather than trusting a bundle.
 
+Full [privacy policy](PRIVACY.md), including how to verify these claims yourself with three `grep` commands.
+
 ## Development
 
 ```bash
