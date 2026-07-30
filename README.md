@@ -66,16 +66,37 @@ There is no `fetch`, no `XMLHttpRequest`, no analytics and no storage anywhere i
 
 **From the Chrome Web Store:** submission pending.
 
-**From source:**
+Until then, install it locally. It takes about a minute and works on Chrome, Edge, Brave, Arc and any other Chromium browser.
+
+### Option A — download the release (no git needed)
+
+1. Download **`hexer.zip`** from the [latest release](https://github.com/Gamaleldientarek/hexer/releases/latest).
+2. Unzip it. You should end up with a folder containing `manifest.json`.
+3. Open `chrome://extensions` in your browser.
+4. Turn on **Developer mode** — the toggle is in the top-right corner.
+5. Click **Load unpacked** and select the unzipped folder.
+6. Hexer appears in your toolbar. Click the puzzle-piece icon and pin it.
+
+### Option B — clone the repo
 
 ```bash
 git clone https://github.com/Gamaleldientarek/hexer
 cd hexer
 ```
 
-Then open `chrome://extensions`, enable Developer mode, and choose **Load unpacked** → select the folder.
+Then follow steps 3–6 above, selecting the `hexer` folder.
 
-Chrome permanently blocks `.crx` installs from outside the Web Store on macOS and Windows, so there is no download-and-install route. The store or load-unpacked are the only two paths.
+Cloning is the better option if you want updates: `git pull`, then hit the refresh arrow on the Hexer card in `chrome://extensions`.
+
+### Try it on
+
+`tailwindcss.com` is the best first test — it declares 204 distinct colours in `oklab()`, which is exactly what screenshot-based tools cannot read. `stripe.com` shows off variable-name recovery, with 437 of them.
+
+### Notes
+
+- **Developer mode must stay on** for an unpacked extension to keep running. Chrome may show a "disable developer mode extensions" prompt on startup — dismiss it; that goes away once the store version is live.
+- **There is no double-click installer.** Chrome permanently blocks `.crx` installs from outside the Web Store on macOS and Windows — no flag, no workaround. Load unpacked and the store are the only two routes for anyone.
+- **Nothing is uploaded anywhere.** No account, no sign-in, no network calls at all.
 
 ## Development
 
