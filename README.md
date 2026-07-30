@@ -169,6 +169,13 @@ Pages above 20,000 elements are sampled, and the UI says so rather than pretendi
 
 Cross-origin **stylesheets** are *not* a limitation, despite being the obvious guess: values and variable names come from computed styles, so origin is irrelevant. stripe.com blocks all five of its stylesheets and still yields 437 variables.
 
+## Building your own
+
+Everything learned shipping this — the permission decision that sets your review
+time, the injected-function pattern, how to test a popup without a store account,
+and the browser behaviours that cost a day each — is written up in
+[**docs/CHROME-EXTENSION-PLAYBOOK.md**](docs/CHROME-EXTENSION-PLAYBOOK.md).
+
 ## Credits
 
 Designed and built by **Gamal Eldien Tarek** — [gamaleldien.com](https://gamaleldien.com).
